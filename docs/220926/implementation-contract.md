@@ -91,6 +91,8 @@ Trạng thái thực hiện hiện tại được theo dõi tại [docs/plan.md]
 
 ## 8. Bổ sung vận hành đã chốt ngày 23/09/2026
 
+Bổ sung UI/UX CLI: mặc định và `--format json` giữ nguyên JSON/schema/exit code hiện hành. Mọi lệnh hỗ trợ `--format text` ở các cấp parser để hiển thị kết quả dễ đọc; lỗi text ra stderr với đủ mã và chi tiết, exit code 1. Giá trị format sai trả lỗi JSON. Option lặp dùng giá trị cuối; `schema`/`capabilities` ở chế độ text là JSON thụt dòng. Đây là ngoại lệ hiển thị tường minh cho quy tắc JSON bên dưới; không thay đổi validator, mutation hay ý nghĩa trạng thái.
+
 - `anno-contract.yaml` và contract đóng gói được sinh từ parser; `anno capabilities` trả cùng inventory và toàn bộ option. Schema từng response nằm trong `schemas/`, package và project sau init; `anno schema NAME` đọc schema của phiên bản đang chạy. `--help`/`--version` là ngoại lệ văn bản; lỗi đối số cũng phải là JSON.
 - Artifact giữ toàn bộ relative filename, ví dụ `.anno/tmp/camera/001.jpg/inspect_0.png`; mục đích là tránh va chạm giữa stem, extension và thư mục. `review sheet IMAGE` là alias overview quan sát có index.
 - Missing label là lỗi input audit; file rỗng là negative hợp lệ. `label bbox empty IMAGE` tạo negative tường minh và từ chối nhãn có box. Audit gom lỗi input và không commit bất kỳ manifest nào nếu có lỗi; không tự tạo dữ liệu thay thế.

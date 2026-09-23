@@ -83,6 +83,20 @@ Chỉ mark approved mới duyệt. Render không duyệt; audit sạch cũng kh�
 
 ## 4. Theo dõi và vận hành
 
+Để đọc trực tiếp trên terminal, dùng `--format text` ở bất kỳ cấp lệnh nào:
+
+```bash
+anno init --format text
+anno doctor --format text
+anno label status --format text
+anno review status --format text
+anno review next --format text
+```
+
+Kết quả text hiển thị từng trường, đường dẫn artifact và gợi ý bước tiếp theo khi phù hợp. Lỗi được ghi vào stderr, giữ mã lỗi và toàn bộ chi tiết; exit code vẫn là 1. `review status` phân biệt tiến độ hoạt động review với số ảnh `approved`: flagged/modified cũng được tính vào reviewed.
+
+Mặc định là JSON; Agent/script có thể ghi rõ `--format json`. Khi lặp `--format`, giá trị cuối cùng được dùng. Giá trị format không hợp lệ trả lỗi JSON. `capabilities` và `schema` trong chế độ text vẫn hiển thị JSON có thụt dòng để dễ đọc. Dùng `anno --help`, `anno review --help` hoặc `anno label bbox add --help` để xem mô tả và ví dụ theo từng cấp.
+
 ```bash
 anno label status
 anno review status

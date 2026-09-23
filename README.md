@@ -29,6 +29,17 @@ anno --version
 
 ## 2. Hướng dẫn sử dụng cho người dùng (User Guide)
 
+Thêm `--format text` để đọc kết quả trực tiếp trên terminal: thông tin được chia dòng, lỗi có mã và hướng dẫn bước tiếp theo. Mặc định vẫn là JSON cho Agent/script; có thể chọn rõ bằng `--format json`.
+
+```bash
+anno doctor --format text
+anno label status --format text
+anno review status --format text
+anno review audit --help
+```
+
+`--format` dùng được trước hoặc sau tên lệnh. Mỗi lệnh có `--help` giải thích đối số và ví dụ. Trong chế độ text, kết quả thành công ra stdout, lỗi ra stderr và exit code là 1. “Reviewed” gồm cả ảnh flagged/modified; xem `Approved` để biết số ảnh đã duyệt.
+
 ### Bước 1: Khởi tạo dự án dữ liệu
 Di chuyển vào thư mục chứa dữ liệu và khởi tạo cấu trúc dự án:
 

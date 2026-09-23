@@ -32,7 +32,7 @@ def commands(parser, prefix=""):
                 else action.type.__name__
                 if action.type
                 else "string",
-                "default": action.default,
+                "default": "json" if action.dest == "format" else action.default,
                 **({"choices": list(action.choices)} if action.choices else {}),
             }
         )

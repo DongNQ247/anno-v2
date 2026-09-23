@@ -41,6 +41,12 @@ Rewrote `anno-align`, `anno-workflow`, `anno-review` and the generated `anno-cla
 
 Verified with the skill-creator structural validator for the three source skills and all four installed skills. A temporary project confirmed init copies the exact source content, doctor distinguishes the uncompiled scaffold from a compiled sample, and repeated init preserves the project's compiled policy. Structural checks and this installation exercise do not establish real Agent annotation quality; independent visual-task evaluation remains future validation.
 
+## Phase 6 — User-facing CLI presentation
+
+Implemented: explicit `--format text` at every command level, readable nested results and complete error details, stderr for text errors, and contextual next-step hints. JSON remains the default with unchanged response envelopes and exit codes. All commands now have help descriptions, argument guidance and examples. Review progress identifies flagged/modified activity separately from approval. Parser-derived contracts, README and user/normative guides document the presentation extension in [TOOL_CONTRACT.md](../TOOL_CONTRACT.md).
+
+Verified locally: **114 tests passed**, including format placement/override, JSON compatibility, argument/readiness errors, truthful review progress, shell-quoted queue hints, artifact paths, all command help, bbox output, and a subprocess audit failure preserving both input diagnostics and manifest bytes. Ruff lint and formatting checks passed. These checks cover CLI presentation and existing synthetic regression cases; no real-dataset usability study or new package release was performed.
+
 ## Explicit limits and deferred work
 
 - `infer` remains unavailable as required by the normative gate: no accepted runtime/model/class-mapping/no-overwrite contract yet.

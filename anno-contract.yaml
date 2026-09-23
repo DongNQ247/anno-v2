@@ -28,6 +28,13 @@ commands:
 command_details:
   init:
     arguments:
+    - name: --format
+      required: false
+      type: string
+      default: json
+      choices:
+      - json
+      - text
     - name: --force
       required: false
       type: boolean
@@ -35,19 +42,47 @@ command_details:
     response_schema: init.v1.json
     exclusive_groups: []
   doctor:
-    arguments: []
+    arguments:
+    - name: --format
+      required: false
+      type: string
+      default: json
+      choices:
+      - json
+      - text
     response_schema: doctor.v1.json
     exclusive_groups: []
   repair:
-    arguments: []
+    arguments:
+    - name: --format
+      required: false
+      type: string
+      default: json
+      choices:
+      - json
+      - text
     response_schema: repair.v1.json
     exclusive_groups: []
   capabilities:
-    arguments: []
+    arguments:
+    - name: --format
+      required: false
+      type: string
+      default: json
+      choices:
+      - json
+      - text
     response_schema: capabilities.v1.json
     exclusive_groups: []
   schema:
     arguments:
+    - name: --format
+      required: false
+      type: string
+      default: json
+      choices:
+      - json
+      - text
     - name: name
       required: true
       type: string
@@ -56,6 +91,13 @@ command_details:
     exclusive_groups: []
   review audit:
     arguments:
+    - name: --format
+      required: false
+      type: string
+      default: json
+      choices:
+      - json
+      - text
     - name: --iou-threshold
       required: false
       type: float
@@ -75,15 +117,36 @@ command_details:
     response_schema: review_audit.v1.json
     exclusive_groups: []
   review next:
-    arguments: []
+    arguments:
+    - name: --format
+      required: false
+      type: string
+      default: json
+      choices:
+      - json
+      - text
     response_schema: review_next.v1.json
     exclusive_groups: []
   review status:
-    arguments: []
+    arguments:
+    - name: --format
+      required: false
+      type: string
+      default: json
+      choices:
+      - json
+      - text
     response_schema: review_status.v1.json
     exclusive_groups: []
   review overview:
     arguments:
+    - name: --format
+      required: false
+      type: string
+      default: json
+      choices:
+      - json
+      - text
     - name: image_path
       required: true
       type: string
@@ -96,6 +159,13 @@ command_details:
     exclusive_groups: []
   review sheet:
     arguments:
+    - name: --format
+      required: false
+      type: string
+      default: json
+      choices:
+      - json
+      - text
     - name: image_path
       required: true
       type: string
@@ -108,6 +178,13 @@ command_details:
     exclusive_groups: []
   review inspect:
     arguments:
+    - name: --format
+      required: false
+      type: string
+      default: json
+      choices:
+      - json
+      - text
     - name: image_path
       required: true
       type: string
@@ -124,6 +201,13 @@ command_details:
     exclusive_groups: []
   review mark:
     arguments:
+    - name: --format
+      required: false
+      type: string
+      default: json
+      choices:
+      - json
+      - text
     - name: image_path
       required: true
       type: string
@@ -163,15 +247,36 @@ command_details:
       - --issue
       - --verdict
   label next:
-    arguments: []
+    arguments:
+    - name: --format
+      required: false
+      type: string
+      default: json
+      choices:
+      - json
+      - text
     response_schema: label_next.v1.json
     exclusive_groups: []
   label status:
-    arguments: []
+    arguments:
+    - name: --format
+      required: false
+      type: string
+      default: json
+      choices:
+      - json
+      - text
     response_schema: label_status.v1.json
     exclusive_groups: []
   label grid:
     arguments:
+    - name: --format
+      required: false
+      type: string
+      default: json
+      choices:
+      - json
+      - text
     - name: image_path
       required: true
       type: string
@@ -184,6 +289,13 @@ command_details:
     exclusive_groups: []
   label overview:
     arguments:
+    - name: --format
+      required: false
+      type: string
+      default: json
+      choices:
+      - json
+      - text
     - name: image_path
       required: true
       type: string
@@ -196,6 +308,13 @@ command_details:
     exclusive_groups: []
   label select:
     arguments:
+    - name: --format
+      required: false
+      type: string
+      default: json
+      choices:
+      - json
+      - text
     - name: image_path
       required: true
       type: string
@@ -212,6 +331,13 @@ command_details:
     exclusive_groups: []
   label visual:
     arguments:
+    - name: --format
+      required: false
+      type: string
+      default: json
+      choices:
+      - json
+      - text
     - name: image_path
       required: true
       type: string
@@ -228,6 +354,13 @@ command_details:
     exclusive_groups: []
   label verify:
     arguments:
+    - name: --format
+      required: false
+      type: string
+      default: json
+      choices:
+      - json
+      - text
     - name: image_path
       required: true
       type: string
@@ -244,6 +377,13 @@ command_details:
     exclusive_groups: []
   label bbox add:
     arguments:
+    - name: --format
+      required: false
+      type: string
+      default: json
+      choices:
+      - json
+      - text
     - name: image_path
       required: true
       type: string
@@ -264,6 +404,13 @@ command_details:
     exclusive_groups: []
   label bbox update:
     arguments:
+    - name: --format
+      required: false
+      type: string
+      default: json
+      choices:
+      - json
+      - text
     - name: image_path
       required: true
       type: string
@@ -288,6 +435,13 @@ command_details:
     exclusive_groups: []
   label bbox delete:
     arguments:
+    - name: --format
+      required: false
+      type: string
+      default: json
+      choices:
+      - json
+      - text
     - name: image_path
       required: true
       type: string
@@ -300,6 +454,13 @@ command_details:
     exclusive_groups: []
   label bbox list:
     arguments:
+    - name: --format
+      required: false
+      type: string
+      default: json
+      choices:
+      - json
+      - text
     - name: image_path
       required: true
       type: string
@@ -308,6 +469,13 @@ command_details:
     exclusive_groups: []
   label bbox empty:
     arguments:
+    - name: --format
+      required: false
+      type: string
+      default: json
+      choices:
+      - json
+      - text
     - name: image_path
       required: true
       type: string

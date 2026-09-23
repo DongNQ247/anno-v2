@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -30,12 +31,23 @@ from .core.storage import commit_labels, project_lock, repair
 from .core.validator import dataset_fingerprint, validate_project_readiness, validate_request, verification_id
 from .core.yolo_io import serialize_labels
 from .init import initialize
+from .presentation import configure_help, render_text
 from .renderers.grid import grid, select
 from .renderers.visualizer import overview, preview
 from .review.reviewer import audit_one, merge_issue
 
 
 class Parser(argparse.ArgumentParser):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("formatter_class", argparse.RawDescriptionHelpFormatter)
+        super().__init__(*args, **kwargs)
+        self.add_argument(
+            "--format",
+            choices=("json", "text"),
+            default=argparse.SUPPRESS,
+            help="Output format: json for scripts (default), text for people; accepted at any command level",
+        )
+
     def error(self, message):
         raise AnnoError(message, "INVALID_ARGUMENT")
 
@@ -105,6 +117,7 @@ def build_parser():
             sub.add_argument("--class", dest="class_id", type=int, required=True)
             sub.add_argument("--cells", required=True)
             sub.add_argument("--verification-id", required=True)
+    configure_help(parser)
     return parser
 
 
@@ -391,8 +404,15 @@ def dispatch(root, args):
 
 
 def main(argv=None):
+    argv = list(sys.argv[1:] if argv is None else argv)
+    output_format = "json"
+    args = None
     try:
+        # Read presentation independently so even argument errors use the requested format.
+        presentation = Parser(add_help=False)
+        output_format = getattr(presentation.parse_known_args(argv)[0], "format", "json")
         args = build_parser().parse_args(argv)
+        output_format = getattr(args, "format", "json")
         result = {"ok": True, "status": "success", **dispatch(Path.cwd().resolve(), args)}
         code = 0
     except AnnoError as error:
@@ -405,7 +425,10 @@ def main(argv=None):
     except (OSError, ValueError, TypeError) as error:
         result = {"ok": False, "status": "error", "error": {"code": "INVALID_PROJECT", "message": str(error)}}
         code = 1
-    print(json.dumps(result, ensure_ascii=False, allow_nan=False))
+    if output_format == "text":
+        print(render_text(result, args), file=sys.stderr if code else sys.stdout)
+    else:
+        print(json.dumps(result, ensure_ascii=False, allow_nan=False))
     return code
 
 

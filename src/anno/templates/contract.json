@@ -31,6 +31,16 @@
     "init": {
       "arguments": [
         {
+          "name": "--format",
+          "required": false,
+          "type": "string",
+          "default": "json",
+          "choices": [
+            "json",
+            "text"
+          ]
+        },
+        {
           "name": "--force",
           "required": false,
           "type": "boolean",
@@ -41,22 +51,65 @@
       "exclusive_groups": []
     },
     "doctor": {
-      "arguments": [],
+      "arguments": [
+        {
+          "name": "--format",
+          "required": false,
+          "type": "string",
+          "default": "json",
+          "choices": [
+            "json",
+            "text"
+          ]
+        }
+      ],
       "response_schema": "doctor.v1.json",
       "exclusive_groups": []
     },
     "repair": {
-      "arguments": [],
+      "arguments": [
+        {
+          "name": "--format",
+          "required": false,
+          "type": "string",
+          "default": "json",
+          "choices": [
+            "json",
+            "text"
+          ]
+        }
+      ],
       "response_schema": "repair.v1.json",
       "exclusive_groups": []
     },
     "capabilities": {
-      "arguments": [],
+      "arguments": [
+        {
+          "name": "--format",
+          "required": false,
+          "type": "string",
+          "default": "json",
+          "choices": [
+            "json",
+            "text"
+          ]
+        }
+      ],
       "response_schema": "capabilities.v1.json",
       "exclusive_groups": []
     },
     "schema": {
       "arguments": [
+        {
+          "name": "--format",
+          "required": false,
+          "type": "string",
+          "default": "json",
+          "choices": [
+            "json",
+            "text"
+          ]
+        },
         {
           "name": "name",
           "required": true,
@@ -69,6 +122,16 @@
     },
     "review audit": {
       "arguments": [
+        {
+          "name": "--format",
+          "required": false,
+          "type": "string",
+          "default": "json",
+          "choices": [
+            "json",
+            "text"
+          ]
+        },
         {
           "name": "--iou-threshold",
           "required": false,
@@ -98,17 +161,49 @@
       "exclusive_groups": []
     },
     "review next": {
-      "arguments": [],
+      "arguments": [
+        {
+          "name": "--format",
+          "required": false,
+          "type": "string",
+          "default": "json",
+          "choices": [
+            "json",
+            "text"
+          ]
+        }
+      ],
       "response_schema": "review_next.v1.json",
       "exclusive_groups": []
     },
     "review status": {
-      "arguments": [],
+      "arguments": [
+        {
+          "name": "--format",
+          "required": false,
+          "type": "string",
+          "default": "json",
+          "choices": [
+            "json",
+            "text"
+          ]
+        }
+      ],
       "response_schema": "review_status.v1.json",
       "exclusive_groups": []
     },
     "review overview": {
       "arguments": [
+        {
+          "name": "--format",
+          "required": false,
+          "type": "string",
+          "default": "json",
+          "choices": [
+            "json",
+            "text"
+          ]
+        },
         {
           "name": "image_path",
           "required": true,
@@ -128,6 +223,16 @@
     "review sheet": {
       "arguments": [
         {
+          "name": "--format",
+          "required": false,
+          "type": "string",
+          "default": "json",
+          "choices": [
+            "json",
+            "text"
+          ]
+        },
+        {
           "name": "image_path",
           "required": true,
           "type": "string",
@@ -145,6 +250,16 @@
     },
     "review inspect": {
       "arguments": [
+        {
+          "name": "--format",
+          "required": false,
+          "type": "string",
+          "default": "json",
+          "choices": [
+            "json",
+            "text"
+          ]
+        },
         {
           "name": "image_path",
           "required": true,
@@ -169,6 +284,16 @@
     },
     "review mark": {
       "arguments": [
+        {
+          "name": "--format",
+          "required": false,
+          "type": "string",
+          "default": "json",
+          "choices": [
+            "json",
+            "text"
+          ]
+        },
         {
           "name": "image_path",
           "required": true,
@@ -228,17 +353,49 @@
       ]
     },
     "label next": {
-      "arguments": [],
+      "arguments": [
+        {
+          "name": "--format",
+          "required": false,
+          "type": "string",
+          "default": "json",
+          "choices": [
+            "json",
+            "text"
+          ]
+        }
+      ],
       "response_schema": "label_next.v1.json",
       "exclusive_groups": []
     },
     "label status": {
-      "arguments": [],
+      "arguments": [
+        {
+          "name": "--format",
+          "required": false,
+          "type": "string",
+          "default": "json",
+          "choices": [
+            "json",
+            "text"
+          ]
+        }
+      ],
       "response_schema": "label_status.v1.json",
       "exclusive_groups": []
     },
     "label grid": {
       "arguments": [
+        {
+          "name": "--format",
+          "required": false,
+          "type": "string",
+          "default": "json",
+          "choices": [
+            "json",
+            "text"
+          ]
+        },
         {
           "name": "image_path",
           "required": true,
@@ -258,6 +415,16 @@
     "label overview": {
       "arguments": [
         {
+          "name": "--format",
+          "required": false,
+          "type": "string",
+          "default": "json",
+          "choices": [
+            "json",
+            "text"
+          ]
+        },
+        {
           "name": "image_path",
           "required": true,
           "type": "string",
@@ -275,6 +442,16 @@
     },
     "label select": {
       "arguments": [
+        {
+          "name": "--format",
+          "required": false,
+          "type": "string",
+          "default": "json",
+          "choices": [
+            "json",
+            "text"
+          ]
+        },
         {
           "name": "image_path",
           "required": true,
@@ -300,6 +477,16 @@
     "label visual": {
       "arguments": [
         {
+          "name": "--format",
+          "required": false,
+          "type": "string",
+          "default": "json",
+          "choices": [
+            "json",
+            "text"
+          ]
+        },
+        {
           "name": "image_path",
           "required": true,
           "type": "string",
@@ -324,6 +511,16 @@
     "label verify": {
       "arguments": [
         {
+          "name": "--format",
+          "required": false,
+          "type": "string",
+          "default": "json",
+          "choices": [
+            "json",
+            "text"
+          ]
+        },
+        {
           "name": "image_path",
           "required": true,
           "type": "string",
@@ -347,6 +544,16 @@
     },
     "label bbox add": {
       "arguments": [
+        {
+          "name": "--format",
+          "required": false,
+          "type": "string",
+          "default": "json",
+          "choices": [
+            "json",
+            "text"
+          ]
+        },
         {
           "name": "image_path",
           "required": true,
@@ -377,6 +584,16 @@
     },
     "label bbox update": {
       "arguments": [
+        {
+          "name": "--format",
+          "required": false,
+          "type": "string",
+          "default": "json",
+          "choices": [
+            "json",
+            "text"
+          ]
+        },
         {
           "name": "image_path",
           "required": true,
@@ -414,6 +631,16 @@
     "label bbox delete": {
       "arguments": [
         {
+          "name": "--format",
+          "required": false,
+          "type": "string",
+          "default": "json",
+          "choices": [
+            "json",
+            "text"
+          ]
+        },
+        {
           "name": "image_path",
           "required": true,
           "type": "string",
@@ -432,6 +659,16 @@
     "label bbox list": {
       "arguments": [
         {
+          "name": "--format",
+          "required": false,
+          "type": "string",
+          "default": "json",
+          "choices": [
+            "json",
+            "text"
+          ]
+        },
+        {
           "name": "image_path",
           "required": true,
           "type": "string",
@@ -443,6 +680,16 @@
     },
     "label bbox empty": {
       "arguments": [
+        {
+          "name": "--format",
+          "required": false,
+          "type": "string",
+          "default": "json",
+          "choices": [
+            "json",
+            "text"
+          ]
+        },
         {
           "name": "image_path",
           "required": true,
