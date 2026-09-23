@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "anno://schemas/label_overview.v1.json",
+  "type": "object",
+  "required": [
+    "ok",
+    "status",
+    "image_path",
+    "artifact_path",
+    "boxes",
+    "class_counts",
+    "label_missing"
+  ],
+  "properties": {
+    "ok": {
+      "const": true
+    },
+    "status": {
+      "const": "success"
+    },
+    "image_path": {
+      "type": "string"
+    },
+    "artifact_path": {
+      "type": "string"
+    },
+    "boxes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "class_counts": {
+      "type": "object"
+    },
+    "label_missing": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}

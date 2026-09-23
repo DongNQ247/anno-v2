@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "anno://schemas/label_bbox_delete.v1.json",
+  "type": "object",
+  "required": [
+    "ok",
+    "status",
+    "image_path",
+    "box_count",
+    "written"
+  ],
+  "properties": {
+    "ok": {
+      "const": true
+    },
+    "status": {
+      "const": "success"
+    },
+    "image_path": {
+      "type": "string"
+    },
+    "box_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "written": {
+      "const": true
+    }
+  },
+  "additionalProperties": false
+}

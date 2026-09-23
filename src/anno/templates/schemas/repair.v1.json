@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "anno://schemas/repair.v1.json",
+  "type": "object",
+  "required": [
+    "ok",
+    "status",
+    "recovered"
+  ],
+  "properties": {
+    "ok": {
+      "const": true
+    },
+    "status": {
+      "const": "success"
+    },
+    "recovered": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}

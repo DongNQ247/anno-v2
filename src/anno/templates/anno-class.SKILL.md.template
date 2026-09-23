@@ -1,0 +1,40 @@
+---
+name: anno-class
+description: Apply this Anno project's agreed class definitions, inclusion criteria and bounding-box rules during annotation or visual review. Read the compilation status first; an uncompiled scaffold is not a labeling policy.
+---
+
+# Project labeling rules
+
+## Compilation status
+
+UNCOMPILED — This file is generated from `label.md` after class names and visual edge cases have been clarified. Do not use while this template text remains.
+
+Use the installed sibling `anno-align` skill to compile this file from actual project evidence. Preserve the marker sentence above until material decisions for the intended scope are resolved. The completed skill must retain its `name` and `description` frontmatter. Doctor detects the marker; it does not validate the quality or completeness of the rules below.
+
+## Scope and sources
+
+Record the project/task and covered image subset, the source paths (`label.md`, `dataset/data.yaml`, relevant examples), and the policy revision/date. State explicit user decisions that resolve conflicts, with enough context to apply them consistently later.
+
+## Class decisions
+
+For every exact ID/name in `dataset/data.yaml`, replace this guidance with:
+
+- Positive definition: observable properties that establish this class.
+- Exclusions: relevant lookalikes and objects outside the task.
+- Distinctions: evidence separating it from neighboring classes.
+- Ambiguity handling: what to do when the required distinguishing evidence is absent.
+- Examples/counterexamples: source-backed cases, with paths when available.
+
+Do not add classes, remap IDs or invent default classifications while compiling.
+
+## Instance and box rules
+
+Replace this guidance with the agreed instance unit and box extent convention, including handling of partial visibility, frame-edge truncation and overlapping objects. Include size, blur or occlusion thresholds only when the project's policy supplies them. Geometry audit thresholds are not automatic object-exclusion rules.
+
+## Uncertainty and unresolved cases
+
+State any case outside the settled policy and the information needed to decide it. Do not convert uncertainty into a negative image or a fabricated class. If material decisions are still pending, retain UNCOMPILED status and the marker sentence.
+
+## Project review checklist
+
+Replace this guidance with a short checklist derived from the actual class and box rules. It should help detect missed targets, wrong classes, wrong instance grouping, boundary errors and policy violations. Refer to `anno-workflow` for CLI mutation mechanics and `anno-review` for the approval process; this skill defines policy, not permission to edit label text or bypass verification.

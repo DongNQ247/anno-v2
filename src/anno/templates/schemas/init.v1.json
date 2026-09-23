@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "anno://schemas/init.v1.json",
+  "type": "object",
+  "required": [
+    "ok",
+    "status",
+    "created",
+    "conflicts",
+    "message"
+  ],
+  "properties": {
+    "ok": {
+      "const": true
+    },
+    "status": {
+      "const": "success"
+    },
+    "created": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "message": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

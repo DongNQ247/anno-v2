@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "anno://schemas/review_audit.v1.json",
+  "type": "object",
+  "required": [
+    "ok",
+    "status",
+    "effective_config",
+    "scanned_images",
+    "flagged_images"
+  ],
+  "properties": {
+    "ok": {
+      "const": true
+    },
+    "status": {
+      "const": "success"
+    },
+    "effective_config": {
+      "type": "object"
+    },
+    "scanned_images": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "flagged_images": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "additionalProperties": false
+}

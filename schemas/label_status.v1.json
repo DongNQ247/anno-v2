@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "anno://schemas/label_status.v1.json",
+  "type": "object",
+  "required": [
+    "ok",
+    "status",
+    "total_images",
+    "labeled",
+    "unlabeled",
+    "progress"
+  ],
+  "properties": {
+    "ok": {
+      "const": true
+    },
+    "status": {
+      "const": "success"
+    },
+    "total_images": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "labeled": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "unlabeled": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "progress": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

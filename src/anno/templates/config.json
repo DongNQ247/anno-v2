@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "review": {
+    "audit": {
+      "checks": {"high_iou": true, "tiny_box": true, "contained_box": true, "extreme_aspect_ratio": true, "out_of_bounds": true},
+      "iou_threshold": 0.8,
+      "min_box_edge_px": 5,
+      "contained_ratio_threshold": 0.999,
+      "max_aspect_ratio": 20.0
+    }
+  }
+}

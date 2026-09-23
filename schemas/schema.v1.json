@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "anno://schemas/schema.v1.json",
+  "type": "object",
+  "required": [
+    "ok",
+    "status",
+    "schema"
+  ],
+  "properties": {
+    "ok": {
+      "const": true
+    },
+    "status": {
+      "const": "success"
+    },
+    "schema": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

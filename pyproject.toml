@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "anno"
+version = "2.0.0"
+description = "Agent-assisted YOLO dataset annotation tools"
+requires-python = ">=3.10"
+dependencies = ["Pillow>=10.1", "PyYAML>=6", "jsonschema>=4.18"]
+
+[project.scripts]
+anno = "anno.cli:main"
+
+[tool.setuptools.package-data]
+anno = ["templates/**/*", "skills/**/*"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "build>=1", "ruff>=0.9", "wheel"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"

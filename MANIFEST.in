@@ -1,0 +1,7 @@
+include README.md TOOL_CONTRACT.md anno-contract.yaml
+recursive-include schemas *.json
+recursive-include tests *.py
+recursive-include docs *.md
+recursive-include tools *.py
+recursive-include src/anno/templates *
+recursive-include src/anno/skills *.md

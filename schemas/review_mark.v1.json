@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "anno://schemas/review_mark.v1.json",
+  "type": "object",
+  "required": [
+    "ok",
+    "status",
+    "image_path",
+    "review_status",
+    "done"
+  ],
+  "properties": {
+    "ok": {
+      "const": true
+    },
+    "status": {
+      "const": "success"
+    },
+    "image_path": {
+      "type": "string"
+    },
+    "review_status": {
+      "enum": [
+        "flagged",
+        "approved"
+      ]
+    },
+    "done": {
+      "const": false
+    }
+  },
+  "additionalProperties": false
+}

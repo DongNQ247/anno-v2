@@ -1,0 +1,525 @@
+{
+  "api_version": "1",
+  "version": "2.0.0",
+  "commands": [
+    "init",
+    "doctor",
+    "repair",
+    "capabilities",
+    "schema",
+    "review audit",
+    "review next",
+    "review status",
+    "review overview",
+    "review sheet",
+    "review inspect",
+    "review mark",
+    "label next",
+    "label status",
+    "label grid",
+    "label overview",
+    "label select",
+    "label visual",
+    "label verify",
+    "label bbox add",
+    "label bbox update",
+    "label bbox delete",
+    "label bbox list",
+    "label bbox empty"
+  ],
+  "command_details": {
+    "init": {
+      "arguments": [
+        {
+          "name": "--force",
+          "required": false,
+          "type": "boolean",
+          "default": false
+        }
+      ],
+      "response_schema": "init.v1.json",
+      "exclusive_groups": []
+    },
+    "doctor": {
+      "arguments": [],
+      "response_schema": "doctor.v1.json",
+      "exclusive_groups": []
+    },
+    "repair": {
+      "arguments": [],
+      "response_schema": "repair.v1.json",
+      "exclusive_groups": []
+    },
+    "capabilities": {
+      "arguments": [],
+      "response_schema": "capabilities.v1.json",
+      "exclusive_groups": []
+    },
+    "schema": {
+      "arguments": [
+        {
+          "name": "name",
+          "required": true,
+          "type": "string",
+          "default": null
+        }
+      ],
+      "response_schema": "schema.v1.json",
+      "exclusive_groups": []
+    },
+    "review audit": {
+      "arguments": [
+        {
+          "name": "--iou-threshold",
+          "required": false,
+          "type": "float",
+          "default": null
+        },
+        {
+          "name": "--min-size",
+          "required": false,
+          "type": "int",
+          "default": null
+        },
+        {
+          "name": "--contained-threshold",
+          "required": false,
+          "type": "float",
+          "default": null
+        },
+        {
+          "name": "--max-aspect-ratio",
+          "required": false,
+          "type": "float",
+          "default": null
+        }
+      ],
+      "response_schema": "review_audit.v1.json",
+      "exclusive_groups": []
+    },
+    "review next": {
+      "arguments": [],
+      "response_schema": "review_next.v1.json",
+      "exclusive_groups": []
+    },
+    "review status": {
+      "arguments": [],
+      "response_schema": "review_status.v1.json",
+      "exclusive_groups": []
+    },
+    "review overview": {
+      "arguments": [
+        {
+          "name": "image_path",
+          "required": true,
+          "type": "string",
+          "default": null
+        },
+        {
+          "name": "--max-size",
+          "required": false,
+          "type": "int",
+          "default": 1024
+        }
+      ],
+      "response_schema": "review_overview.v1.json",
+      "exclusive_groups": []
+    },
+    "review sheet": {
+      "arguments": [
+        {
+          "name": "image_path",
+          "required": true,
+          "type": "string",
+          "default": null
+        },
+        {
+          "name": "--max-size",
+          "required": false,
+          "type": "int",
+          "default": 1024
+        }
+      ],
+      "response_schema": "review_sheet.v1.json",
+      "exclusive_groups": []
+    },
+    "review inspect": {
+      "arguments": [
+        {
+          "name": "image_path",
+          "required": true,
+          "type": "string",
+          "default": null
+        },
+        {
+          "name": "--index",
+          "required": true,
+          "type": "int",
+          "default": null
+        },
+        {
+          "name": "--margin",
+          "required": false,
+          "type": "float",
+          "default": 0.2
+        }
+      ],
+      "response_schema": "review_inspect.v1.json",
+      "exclusive_groups": []
+    },
+    "review mark": {
+      "arguments": [
+        {
+          "name": "image_path",
+          "required": true,
+          "type": "string",
+          "default": null
+        },
+        {
+          "name": "--issue",
+          "required": false,
+          "type": "string",
+          "default": null,
+          "choices": [
+            "class_mismatch",
+            "ghost_object",
+            "missing_object",
+            "occlusion_violation",
+            "tightness_error"
+          ]
+        },
+        {
+          "name": "--verdict",
+          "required": false,
+          "type": "string",
+          "default": null,
+          "choices": [
+            "approved"
+          ]
+        },
+        {
+          "name": "--message",
+          "required": false,
+          "type": "string",
+          "default": null
+        },
+        {
+          "name": "--box-index",
+          "required": false,
+          "type": "int",
+          "default": null
+        },
+        {
+          "name": "--notes",
+          "required": false,
+          "type": "string",
+          "default": null
+        }
+      ],
+      "response_schema": "review_mark.v1.json",
+      "exclusive_groups": [
+        {
+          "required": true,
+          "arguments": [
+            "--issue",
+            "--verdict"
+          ]
+        }
+      ]
+    },
+    "label next": {
+      "arguments": [],
+      "response_schema": "label_next.v1.json",
+      "exclusive_groups": []
+    },
+    "label status": {
+      "arguments": [],
+      "response_schema": "label_status.v1.json",
+      "exclusive_groups": []
+    },
+    "label grid": {
+      "arguments": [
+        {
+          "name": "image_path",
+          "required": true,
+          "type": "string",
+          "default": null
+        },
+        {
+          "name": "--cells",
+          "required": false,
+          "type": "string",
+          "default": null
+        }
+      ],
+      "response_schema": "label_grid.v1.json",
+      "exclusive_groups": []
+    },
+    "label overview": {
+      "arguments": [
+        {
+          "name": "image_path",
+          "required": true,
+          "type": "string",
+          "default": null
+        },
+        {
+          "name": "--max-size",
+          "required": false,
+          "type": "int",
+          "default": 1024
+        }
+      ],
+      "response_schema": "label_overview.v1.json",
+      "exclusive_groups": []
+    },
+    "label select": {
+      "arguments": [
+        {
+          "name": "image_path",
+          "required": true,
+          "type": "string",
+          "default": null
+        },
+        {
+          "name": "--cells",
+          "required": true,
+          "type": "string",
+          "default": null
+        },
+        {
+          "name": "--margin",
+          "required": false,
+          "type": "float",
+          "default": 0.2
+        }
+      ],
+      "response_schema": "label_select.v1.json",
+      "exclusive_groups": []
+    },
+    "label visual": {
+      "arguments": [
+        {
+          "name": "image_path",
+          "required": true,
+          "type": "string",
+          "default": null
+        },
+        {
+          "name": "--cells",
+          "required": true,
+          "type": "string",
+          "default": null
+        },
+        {
+          "name": "--margin",
+          "required": false,
+          "type": "float",
+          "default": 0.2
+        }
+      ],
+      "response_schema": "label_visual.v1.json",
+      "exclusive_groups": []
+    },
+    "label verify": {
+      "arguments": [
+        {
+          "name": "image_path",
+          "required": true,
+          "type": "string",
+          "default": null
+        },
+        {
+          "name": "--class",
+          "required": true,
+          "type": "int",
+          "default": null
+        },
+        {
+          "name": "--cells",
+          "required": true,
+          "type": "string",
+          "default": null
+        }
+      ],
+      "response_schema": "label_verify.v1.json",
+      "exclusive_groups": []
+    },
+    "label bbox add": {
+      "arguments": [
+        {
+          "name": "image_path",
+          "required": true,
+          "type": "string",
+          "default": null
+        },
+        {
+          "name": "--class",
+          "required": true,
+          "type": "int",
+          "default": null
+        },
+        {
+          "name": "--cells",
+          "required": true,
+          "type": "string",
+          "default": null
+        },
+        {
+          "name": "--verification-id",
+          "required": true,
+          "type": "string",
+          "default": null
+        }
+      ],
+      "response_schema": "label_bbox_add.v1.json",
+      "exclusive_groups": []
+    },
+    "label bbox update": {
+      "arguments": [
+        {
+          "name": "image_path",
+          "required": true,
+          "type": "string",
+          "default": null
+        },
+        {
+          "name": "--index",
+          "required": true,
+          "type": "int",
+          "default": null
+        },
+        {
+          "name": "--class",
+          "required": true,
+          "type": "int",
+          "default": null
+        },
+        {
+          "name": "--cells",
+          "required": true,
+          "type": "string",
+          "default": null
+        },
+        {
+          "name": "--verification-id",
+          "required": true,
+          "type": "string",
+          "default": null
+        }
+      ],
+      "response_schema": "label_bbox_update.v1.json",
+      "exclusive_groups": []
+    },
+    "label bbox delete": {
+      "arguments": [
+        {
+          "name": "image_path",
+          "required": true,
+          "type": "string",
+          "default": null
+        },
+        {
+          "name": "--index",
+          "required": true,
+          "type": "int",
+          "default": null
+        }
+      ],
+      "response_schema": "label_bbox_delete.v1.json",
+      "exclusive_groups": []
+    },
+    "label bbox list": {
+      "arguments": [
+        {
+          "name": "image_path",
+          "required": true,
+          "type": "string",
+          "default": null
+        }
+      ],
+      "response_schema": "label_bbox_list.v1.json",
+      "exclusive_groups": []
+    },
+    "label bbox empty": {
+      "arguments": [
+        {
+          "name": "image_path",
+          "required": true,
+          "type": "string",
+          "default": null
+        }
+      ],
+      "response_schema": "label_bbox_empty.v1.json",
+      "exclusive_groups": []
+    }
+  },
+  "schemas": {
+    "audit_config.v1": "audit_config.v1.json",
+    "capabilities.v1": "capabilities.v1.json",
+    "doctor.v1": "doctor.v1.json",
+    "error.v1": "error.v1.json",
+    "init.v1": "init.v1.json",
+    "label_bbox_add.v1": "label_bbox_add.v1.json",
+    "label_bbox_delete.v1": "label_bbox_delete.v1.json",
+    "label_bbox_empty.v1": "label_bbox_empty.v1.json",
+    "label_bbox_list.v1": "label_bbox_list.v1.json",
+    "label_bbox_update.v1": "label_bbox_update.v1.json",
+    "label_grid.v1": "label_grid.v1.json",
+    "label_next.v1": "label_next.v1.json",
+    "label_overview.v1": "label_overview.v1.json",
+    "label_select.v1": "label_select.v1.json",
+    "label_status.v1": "label_status.v1.json",
+    "label_verify.v1": "label_verify.v1.json",
+    "label_visual.v1": "label_visual.v1.json",
+    "manifest.v1": "manifest.v1.json",
+    "repair.v1": "repair.v1.json",
+    "review_audit.v1": "review_audit.v1.json",
+    "review_inspect.v1": "review_inspect.v1.json",
+    "review_mark.v1": "review_mark.v1.json",
+    "review_next.v1": "review_next.v1.json",
+    "review_overview.v1": "review_overview.v1.json",
+    "review_sheet.v1": "review_sheet.v1.json",
+    "review_status.v1": "review_status.v1.json",
+    "schema.v1": "schema.v1.json"
+  },
+  "paths": {
+    "images": "dataset/images",
+    "labels": "dataset/labels",
+    "manifest": ".anno/manifest.json",
+    "config": ".anno/config/config.json",
+    "artifacts": ".anno/tmp/<relative-image-filename>/",
+    "schemas": ".anno/schemas",
+    "transaction": ".anno/transaction.json"
+  },
+  "mutation_rules": {
+    "bbox_add_requires_verification_id": true,
+    "bbox_update_requires_verification_id": true,
+    "render_commands_change_review_state": false,
+    "concurrency": "POSIX advisory project lock",
+    "recovery": "anno repair",
+    "negative_images": "anno label bbox empty IMAGE"
+  },
+  "errors": [
+    "INVALID_ARGUMENT",
+    "INVALID_REQUEST",
+    "INVALID_PROJECT",
+    "PATH_OUTSIDE_ROOT",
+    "INVALID_IMAGE",
+    "MISSING_LABEL",
+    "INVALID_LABEL",
+    "AUDIT_INPUT_ERROR",
+    "STALE_AUDIT",
+    "OPEN_GEOMETRY_ISSUES",
+    "VERIFICATION_MISMATCH",
+    "CONCURRENT_CHANGE",
+    "RECOVERY_REQUIRED"
+  ],
+  "unsupported": [
+    "label infer",
+    "a4od entrypoint"
+  ],
+  "platforms": [
+    "POSIX (Linux tested)"
+  ]
+}

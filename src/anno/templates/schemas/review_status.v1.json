@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "anno://schemas/review_status.v1.json",
+  "type": "object",
+  "required": [
+    "ok",
+    "status",
+    "total_images",
+    "reviewed",
+    "unreviewed",
+    "progress",
+    "by_status"
+  ],
+  "properties": {
+    "ok": {
+      "const": true
+    },
+    "status": {
+      "const": "success"
+    },
+    "total_images": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "reviewed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "unreviewed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "progress": {
+      "type": "string"
+    },
+    "by_status": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

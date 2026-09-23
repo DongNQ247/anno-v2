@@ -1,0 +1,7 @@
+# Temporary compatibility location required by the A4OD migration contract.
+# Anno project data and runtime state remain under .anno/.
+api_version: "1"
+implementation: anno
+command_summary: ../anno-contract.yaml
+capabilities_schema: ../schemas/capabilities.v1.json
+error_schema: ../schemas/error.v1.json

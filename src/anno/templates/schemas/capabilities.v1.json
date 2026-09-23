@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "anno://schemas/capabilities.v1.json",
+  "type": "object",
+  "required": [
+    "ok",
+    "status",
+    "api_version",
+    "version",
+    "commands",
+    "command_details",
+    "schemas",
+    "paths",
+    "mutation_rules",
+    "errors",
+    "unsupported",
+    "platforms"
+  ],
+  "properties": {
+    "ok": {
+      "const": true
+    },
+    "status": {
+      "const": "success"
+    },
+    "api_version": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "commands": {
+      "type": "array"
+    },
+    "command_details": {
+      "type": "object"
+    },
+    "schemas": {
+      "type": "object"
+    },
+    "paths": {
+      "type": "object"
+    },
+    "mutation_rules": {
+      "type": "object"
+    },
+    "errors": {
+      "type": "array"
+    },
+    "unsupported": {
+      "type": "array"
+    },
+    "platforms": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": false
+}

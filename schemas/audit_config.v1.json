@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "anno://schemas/audit_config.v1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "review"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "audit"
+      ],
+      "properties": {
+        "audit": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "checks",
+            "iou_threshold",
+            "min_box_edge_px",
+            "contained_ratio_threshold",
+            "max_aspect_ratio"
+          ],
+          "properties": {
+            "checks": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "contained_box",
+                "extreme_aspect_ratio",
+                "high_iou",
+                "out_of_bounds",
+                "tiny_box"
+              ],
+              "properties": {
+                "contained_box": {
+                  "type": "boolean"
+                },
+                "extreme_aspect_ratio": {
+                  "type": "boolean"
+                },
+                "high_iou": {
+                  "type": "boolean"
+                },
+                "out_of_bounds": {
+                  "type": "boolean"
+                },
+                "tiny_box": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "iou_threshold": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 1
+            },
+            "min_box_edge_px": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "contained_ratio_threshold": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 1
+            },
+            "max_aspect_ratio": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "anno://schemas/doctor.v1.json",
+  "type": "object",
+  "required": [
+    "ok",
+    "status",
+    "ready",
+    "images_count",
+    "classes_count",
+    "class_compiled",
+    "model_assisted",
+    "errors",
+    "warnings"
+  ],
+  "properties": {
+    "ok": {
+      "const": true
+    },
+    "status": {
+      "const": "success"
+    },
+    "ready": {
+      "const": true
+    },
+    "images_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "classes_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "class_compiled": {
+      "type": "boolean"
+    },
+    "model_assisted": {
+      "const": false
+    },
+    "errors": {
+      "type": "array"
+    },
+    "warnings": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "anno://schemas/review_next.v1.json",
+  "type": "object",
+  "required": [
+    "ok",
+    "status",
+    "image_path",
+    "done"
+  ],
+  "properties": {
+    "ok": {
+      "const": true
+    },
+    "status": {
+      "const": "success"
+    },
+    "image_path": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "done": {
+      "type": "boolean"
+    },
+    "review_status": {
+      "enum": [
+        "flagged",
+        "modified",
+        "unreviewed"
+      ]
+    },
+    "issues": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "done": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "image_path": {
+            "type": "null"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "image_path": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ]
+}

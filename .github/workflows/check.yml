@@ -1,0 +1,36 @@
+name: CLI acceptance
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  acceptance:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.10', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install into project virtual environment
+        run: |
+          python -m venv .venv
+          .venv/bin/python -m pip install 'setuptools>=68' wheel
+          .venv/bin/python -m pip install --no-build-isolation -e '.[dev]'
+      - name: Lint and regression suite
+        run: |
+          .venv/bin/ruff check src tests tools
+          .venv/bin/ruff format --check src tests tools
+          .venv/bin/pytest -q
+      - name: Verify generated contract
+        run: |
+          .venv/bin/python tools/generate_contract.py
+          git diff --exit-code -- anno-contract.yaml schemas src/anno/templates
+      - name: Build and exercise installed wheel
+        run: |
+          .venv/bin/python -m build --no-isolation
+          .venv/bin/python tools/package_smoke.py
+          .venv/bin/python -m pip check

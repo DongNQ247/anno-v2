@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "anno://schemas/review_inspect.v1.json",
+  "type": "object",
+  "required": [
+    "ok",
+    "status",
+    "image_path",
+    "artifact_path",
+    "box_index",
+    "crop"
+  ],
+  "properties": {
+    "ok": {
+      "const": true
+    },
+    "status": {
+      "const": "success"
+    },
+    "image_path": {
+      "type": "string"
+    },
+    "artifact_path": {
+      "type": "string"
+    },
+    "box_index": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "crop": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "type": "integer"
+      }
+    }
+  },
+  "additionalProperties": false
+}
