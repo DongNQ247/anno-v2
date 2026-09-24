@@ -259,6 +259,30 @@ def generate():
         if command.endswith("select"):
             schema["properties"]["crop"] = {"type": "array", "minItems": 4, "maxItems": 4}
             schema["required"].append("crop")
+        if command.endswith(("grid", "select")):
+            pair = {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "integer", "minimum": 1}}
+            metadata = {
+                "native_crop_size": pair,
+                "render_size": pair,
+                "scale": {"type": "integer", "minimum": 1, "maximum": 4},
+                "readable_labels": {"const": True},
+            }
+            if command.endswith("grid"):
+                metadata.update(
+                    subcell_size={
+                        "type": "array",
+                        "minItems": 2,
+                        "maxItems": 2,
+                        "items": {"type": "number", "exclusiveMinimum": 0},
+                    },
+                    parent_cell_count={"type": "integer", "minimum": 1, "maximum": 8},
+                    subcell_count={"type": "integer", "minimum": 64, "maximum": 512},
+                    recommended_max_parent_cells={"const": 8},
+                )
+                schema["dependentRequired"] = {"crop": list(metadata)}
+            else:
+                schema["required"].extend(metadata)
+            schema["properties"].update(metadata)
         (ROOT / "schemas" / filename).write_text(json.dumps(schema, indent=2) + "\n")
     contract["schemas"] = {p.stem: p.name for p in sorted((ROOT / "schemas").glob("*.json"))}
     (ROOT / "src/anno/templates/contract.json").write_text(json.dumps(contract, indent=2) + "\n")

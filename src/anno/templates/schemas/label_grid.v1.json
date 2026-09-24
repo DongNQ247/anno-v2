@@ -65,7 +65,67 @@
       "type": "array",
       "minItems": 4,
       "maxItems": 4
+    },
+    "native_crop_size": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "render_size": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "scale": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 4
+    },
+    "readable_labels": {
+      "const": true
+    },
+    "subcell_size": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "number",
+        "exclusiveMinimum": 0
+      }
+    },
+    "parent_cell_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 8
+    },
+    "subcell_count": {
+      "type": "integer",
+      "minimum": 64,
+      "maximum": 512
+    },
+    "recommended_max_parent_cells": {
+      "const": 8
     }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+  "dependentRequired": {
+    "crop": [
+      "native_crop_size",
+      "render_size",
+      "scale",
+      "readable_labels",
+      "subcell_size",
+      "parent_cell_count",
+      "subcell_count",
+      "recommended_max_parent_cells"
+    ]
+  }
 }

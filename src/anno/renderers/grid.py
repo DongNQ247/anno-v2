@@ -10,18 +10,61 @@ from ..core.errors import AnnoError
 from .visualizer import crop_bounds
 
 
-def _upscale_crop(cropped, max_size=1024):
-    crop_w, crop_h = cropped.size
-    max_dim = max(crop_w, crop_h)
-    if max_dim < max_size:
-        scale = max_size / max_dim
-        new_w = round(crop_w * scale)
-        new_h = round(crop_h * scale)
-        return cropped.resize((new_w, new_h), resample=Image.Resampling.NEAREST), (
-            new_w / crop_w,
-            new_h / crop_h,
+def _local_render(image, expression, margin, scale, subdivide):
+    if str(scale) not in ("auto", "1", "2", "3", "4"):
+        raise AnnoError("--scale must be auto or an integer from 1 to 4")
+    parents = selected_cells(expression)
+    crop = crop_bounds(cells_bounds(expression, *image.size), image.size, margin)
+    native_size = [crop[2] - crop[0], crop[3] - crop[1]]
+    depth = max(d for _, _, d in parents) + 1
+    subcell = [image.width / 8**depth, image.height / 8**depth]
+    minimum = min(subcell)
+    required = math.ceil(28 / minimum) if minimum else None
+    details = {
+        "native_crop_size": native_size,
+        "native_subcell_size": subcell,
+        "native_subcell_min_edge": minimum,
+        "required_scale": required,
+        "max_scale": 4,
+        "parent_cell_count": len(parents),
+        "subcell_count": len(parents) * 64,
+        "recommended_max_parent_cells": 8,
+        "suggested_cells": "select a smaller local edge region; use a coarser cell level if subcells are too small",
+    }
+    if subdivide and len(parents) > 8:
+        raise AnnoError("Subgrid region is too broad; select a smaller local edge region", details=details)
+    if scale == "auto" and (required is None or required > 4):
+        raise AnnoError("Local cells need more than max_scale; use a coarser cell level", details=details)
+    factor = max(1, required) if scale == "auto" else int(scale)
+    cells = (
+        [(x * 8 + i, y * 8 + j, d + 1) for x, y, d in parents for j in range(8) for i in range(8)]
+        if subdivide
+        else parents
+    )
+    result = image.crop(crop)
+    if factor > 1:
+        result = result.resize(tuple(edge * factor for edge in native_size), Image.Resampling.LANCZOS)
+    try:
+        labels, geometry = draw_cells(result, cells, image.size, crop[:2], (factor, factor))
+    except AnnoError as exc:
+        raise AnnoError(str(exc), details=details) from exc
+    metadata = {
+        "cell_labels": labels,
+        "cells": geometry,
+        "crop": list(crop),
+        "native_crop_size": native_size,
+        "scale": factor,
+        "render_size": list(result.size),
+        "readable_labels": True,
+    }
+    if subdivide:
+        metadata.update(
+            subcell_size=[edge * factor for edge in subcell],
+            parent_cell_count=len(parents),
+            subcell_count=len(cells),
+            recommended_max_parent_cells=8,
         )
-    return cropped, (1.0, 1.0)
+    return result, metadata
 
 
 def _find_font(text, max_w, max_h):
@@ -177,8 +220,10 @@ def draw_cells(image, cells, original_size, origin=(0, 0), scale=(1, 1)):
     return labels, cell_geometry
 
 
-def grid(image, expression=None):
+def grid(image, expression=None, scale="auto"):
     if expression is None:
+        if scale != "auto":
+            raise AnnoError("--scale requires --cells for label grid")
         result = image.copy()
         result.thumbnail((1024, 1024))
         labels, cells_geo = draw_cells(
@@ -188,19 +233,8 @@ def grid(image, expression=None):
             scale=(result.width / image.width, result.height / image.height),
         )
         return result, {"cell_labels": labels, "cells": cells_geo}
-    parents = selected_cells(expression, limit=64)
-    cells = [(x * 8 + i, y * 8 + j, d + 1) for x, y, d in parents for j in range(8) for i in range(8)]
-    crop = cells_bounds(expression, *image.size)
-    result = image.crop(crop)
-    result, scale = _upscale_crop(result)
-    labels, cells_geo = draw_cells(result, cells, image.size, crop[:2], scale=scale)
-    return result, {"cell_labels": labels, "cells": cells_geo, "crop": list(crop)}
+    return _local_render(image, expression, 0, scale, True)
 
 
-def select(image, expression, margin):
-    cells = selected_cells(expression)
-    crop = crop_bounds(cells_bounds(expression, *image.size), image.size, margin)
-    result = image.crop(crop)
-    result, scale = _upscale_crop(result)
-    labels, cells_geo = draw_cells(result, cells, image.size, crop[:2], scale=scale)
-    return result, {"cell_labels": labels, "cells": cells_geo, "crop": list(crop)}
+def select(image, expression, margin, scale="auto"):
+    return _local_render(image, expression, margin, scale, False)

@@ -95,6 +95,12 @@ def build_parser():
     sub = label.add_parser("grid")
     sub.add_argument("image_path")
     sub.add_argument("--cells")
+    sub.add_argument(
+        "--scale",
+        choices=("auto", "1", "2", "3", "4"),
+        default="auto",
+        help="Local crop scale: auto targets 28 px per subcell, maximum 4 (default: auto; requires --cells)",
+    )
     sub = label.add_parser("overview")
     sub.add_argument("image_path")
     sub.add_argument("--max-size", type=int, default=1024)
@@ -103,6 +109,13 @@ def build_parser():
         sub.add_argument("image_path")
         sub.add_argument("--cells", required=True)
         sub.add_argument("--margin", type=float, default=0.20)
+        if name == "select":
+            sub.add_argument(
+                "--scale",
+                choices=("auto", "1", "2", "3", "4"),
+                default="auto",
+                help="Crop scale: auto targets 28 px per implied subcell before margin, maximum 4 (default: auto)",
+            )
     sub = label.add_parser("verify")
     sub.add_argument("image_path")
     sub.add_argument("--class", dest="class_id", type=int, required=True)
@@ -137,10 +150,10 @@ def render(root, args, request):
         result, crop = preview(image, request.boxes[args.index]["xyxy"], args.margin)
         extra = {"box_index": args.index, "crop": list(crop)}
     elif name == "grid":
-        result, extra = grid(image, args.cells)
+        result, extra = grid(image, args.cells, args.scale)
         extra["image_size"] = [request.width, request.height]
     elif name == "select":
-        result, extra = select(image, args.cells, args.margin)
+        result, extra = select(image, args.cells, args.margin, args.scale)
         extra["image_size"] = [request.width, request.height]
     elif name == "visual":
         result, crop = preview(image, request.box, args.margin)

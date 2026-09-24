@@ -285,6 +285,16 @@ command_details:
       required: false
       type: string
       default: null
+    - name: --scale
+      required: false
+      type: string
+      default: auto
+      choices:
+      - auto
+      - '1'
+      - '2'
+      - '3'
+      - '4'
     response_schema: label_grid.v1.json
     exclusive_groups: []
   label overview:
@@ -327,6 +337,16 @@ command_details:
       required: false
       type: float
       default: 0.2
+    - name: --scale
+      required: false
+      type: string
+      default: auto
+      choices:
+      - auto
+      - '1'
+      - '2'
+      - '3'
+      - '4'
     response_schema: label_select.v1.json
     exclusive_groups: []
   label visual:

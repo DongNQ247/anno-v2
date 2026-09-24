@@ -47,6 +47,12 @@ Implemented: explicit `--format text` at every command level, readable nested re
 
 Verified locally: **114 tests passed**, including format placement/override, JSON compatibility, argument/readiness errors, truthful review progress, shell-quoted queue hints, artifact paths, all command help, bbox output, and a subprocess audit failure preserving both input diagnostics and manifest bytes. Ruff lint and formatting checks passed. These checks cover CLI presentation and existing synthetic regression cases; no real-dataset usability study or new package release was performed.
 
+## Phase 7 — Local grid and select readability (2026-09-24)
+
+Implemented per local-render feedback: default auto scale targeting 28 px per subcell, integer overrides 1–4, crop/render metadata, detailed sizing failures, and a hard limit of 8 parent cells for subgrids. Select uses the same scale calculation before margin. Original image coordinates and the global thumbnail behavior are preserved. Parser-generated capabilities and both schema copies are updated; semantics and the edge-inspection workflow are documented in [TOOL_CONTRACT.md](../TOOL_CONTRACT.md) and the user guide.
+
+Verified: 137 tests passed; Ruff lint/format, dependency check, wheel/sdist build and isolated installed-wheel smoke passed. Synthetic 720x1280 acceptance images produce G4 grid 270x480 and select 378x672 at scale 3. Tests cover explicit/default scales, invalid values, original geometry, broad-region rejection, the 8/9-parent threshold and required scale 5 failures. The named feedback images 1.jpg/5.jpg are absent here; real-object edge readability is not verified. Existing testrepo lacks its project lock, so CLI verification used clean temporary projects without migrating testrepo.
+
 ## Explicit limits and deferred work
 
 - `infer` remains unavailable as required by the normative gate: no accepted runtime/model/class-mapping/no-overwrite contract yet.

@@ -76,6 +76,14 @@ def main():
             for schema in capabilities["schemas"].values():
                 run("schema", schema)
             run("label", "grid", path)
+            local = path
+            Image.new("RGB", (720, 1280), "white").save(project / local)
+            for command, expected in (("grid", [270, 480]), ("select", [378, 672])):
+                rendered = run("label", command, local, "--cells", "G4")
+                assert rendered["scale"] == 3
+                assert rendered["render_size"] == expected
+                with Image.open(project / rendered["artifact_path"]) as artifact:
+                    assert list(artifact.size) == expected
             token = run("label", "verify", path, "--class", "0", "--cells", "B2:C3")["verification_id"]
             run("label", "bbox", "add", path, "--class", "0", "--cells", "B2:C3", "--verification-id", token)
             run("review", "audit")

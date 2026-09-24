@@ -49,6 +49,10 @@ Verify lại cho mỗi lần add/update. Update cần thêm `--index N`; delete 
 
 Lưới cấp đầu A1..H8, cấp sau a1..h8. `select` giữ cấp hiện tại; `grid --cells` chia từng ô cha sang cấp tiếp theo. Artifact trả qua `artifact_path`; box dùng hình chữ nhật bao nhỏ nhất của tập ô. Render từ chối các ô nhỏ hơn một pixel, không đủ chỗ cho tên tọa độ hoặc lựa chọn quá nhiều ô; chọn vùng hẹp hơn hoặc cấp thô hơn.
 
+`grid --cells` và `select` mặc định dùng `--scale auto`, tính scale nguyên theo mục tiêu cạnh subcell tối thiểu 28 px, tối đa 4. Có thể chỉ định `--scale 1|2|3|4`. Với `select`, scale tính từ cell trước khi thêm margin. Nếu auto cần scale lớn hơn 4, lỗi trả kích thước đã tính và hướng xử lý. Metadata gồm `native_crop_size`, `scale`, `render_size`, `readable_labels`; subgrid thêm `subcell_size` và số parent/subcell. Tọa độ `cells[].xyxy` vẫn thuộc ảnh gốc.
+
+Để kiểm tra biên, chọn 1–3 ô gần biên chưa chắc chắn; subgrid từ chối vùng vượt 8 ô cha dù dùng scale thủ công. Dùng `select` để xem vùng biên, dùng subgrid làm mốc khi đọc được, rồi xem `visual` của bbox cuối trước khi verify và ghi nhãn. `readable_labels` chỉ xác nhận chữ tọa độ vừa ô, không xác nhận chất lượng bbox.
+
 Nếu `label next` trả `task: fix_issues`, đọc `issues`, xem overview/inspect rồi sửa đầy đủ issue. Sau mutation ảnh chuyển modified và chờ review; không hiểu `label next` hết việc là dataset đã được duyệt.
 
 ## 3. Audit và duyệt
