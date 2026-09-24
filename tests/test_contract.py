@@ -54,7 +54,7 @@ def test_init_preserves_every_existing_file(project):
 
 
 def test_init_creates_agents_md(project):
-    root, run, image = project
+    root, _run, _image = project
     agents_file = root / "AGENTS.md"
     assert agents_file.exists()
     content = agents_file.read_text(encoding="utf-8")
