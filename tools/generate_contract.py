@@ -143,6 +143,16 @@ def generate():
             "image_path": {"type": "string"},
             "verification_id": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
             "box": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"type": "integer"}},
+            "candidate": {
+                "type": "object",
+                "required": ["class_id", "class_name", "cells", "xyxy"],
+                "properties": {
+                    "class_id": {"type": "integer", "minimum": 0},
+                    "class_name": {"type": "string"},
+                    "cells": {"type": "string"},
+                    "xyxy": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"type": "integer"}},
+                },
+            },
         },
         "label bbox list": {
             "boxes": {
@@ -163,9 +173,21 @@ def generate():
             elif command.startswith("label bbox"):
                 properties = {
                     "image_path": {"type": "string"},
+                    "label_path": {"type": "string"},
                     "box_count": {"type": "integer", "minimum": 0},
                     "written": {"const": True},
                 }
+                if command.endswith(("add", "update")):
+                    properties["box"] = {
+                        "type": "object",
+                        "required": ["index", "class_id", "class_name", "xyxy"],
+                        "properties": {
+                            "index": {"type": "integer", "minimum": 0},
+                            "class_id": {"type": "integer", "minimum": 0},
+                            "class_name": {"type": "string"},
+                            "xyxy": {"type": "array", "minItems": 4, "maxItems": 4},
+                        },
+                    }
             else:
                 properties = {"image_path": {"type": "string"}, "artifact_path": {"type": "string"}}
                 if command.endswith(("overview", "sheet")):
@@ -180,7 +202,31 @@ def generate():
                         crop={"type": "array", "minItems": 4, "maxItems": 4, "items": {"type": "integer"}},
                     )
                 if command.endswith(("grid", "select")):
-                    properties.update(cell_labels={"type": "array", "items": {"type": "string"}})
+                    properties.update(
+                        cell_labels={"type": "array", "items": {"type": "string"}},
+                        cells={
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": ["id", "xyxy"],
+                                "properties": {
+                                    "id": {"type": "string"},
+                                    "xyxy": {
+                                        "type": "array",
+                                        "minItems": 4,
+                                        "maxItems": 4,
+                                        "items": {"type": "integer"},
+                                    },
+                                },
+                            },
+                        },
+                        image_size={
+                            "type": "array",
+                            "minItems": 2,
+                            "maxItems": 2,
+                            "items": {"type": "integer"},
+                        },
+                    )
                 if command.endswith("visual"):
                     properties.update(
                         crop={"type": "array", "minItems": 4, "maxItems": 4},
@@ -200,6 +246,7 @@ def generate():
                 schema["properties"].update(
                     review_status={"enum": ["flagged", "modified", "unreviewed"]}, issues={"type": "object"}
                 )
+            schema["properties"]["reason"] = {"type": "string"}
             schema["allOf"] = [
                 {
                     "if": {"properties": {"done": {"const": True}}},

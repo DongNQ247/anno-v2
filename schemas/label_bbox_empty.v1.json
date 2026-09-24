@@ -6,6 +6,7 @@
     "ok",
     "status",
     "image_path",
+    "label_path",
     "box_count",
     "written"
   ],

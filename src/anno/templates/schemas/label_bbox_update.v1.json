@@ -6,8 +6,10 @@
     "ok",
     "status",
     "image_path",
+    "label_path",
     "box_count",
-    "written"
+    "written",
+    "box"
   ],
   "properties": {
     "ok": {
@@ -31,12 +33,29 @@
     },
     "box": {
       "type": "object",
-      "required": ["index", "class_id", "class_name", "xyxy"],
+      "required": [
+        "index",
+        "class_id",
+        "class_name",
+        "xyxy"
+      ],
       "properties": {
-        "index": {"type": "integer", "minimum": 0},
-        "class_id": {"type": "integer", "minimum": 0},
-        "class_name": {"type": "string"},
-        "xyxy": {"type": "array", "minItems": 4, "maxItems": 4}
+        "index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "class_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "class_name": {
+          "type": "string"
+        },
+        "xyxy": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4
+        }
       }
     }
   },
