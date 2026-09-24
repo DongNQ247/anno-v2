@@ -49,7 +49,30 @@ Use the smallest amount of zoom that resolves the decision:
 
 Coordinates are anchored to the original image. Do not rename a crop's upper-left corner A1. Hierarchy uses `A1-a1`, then `A1-a1-a1`; ranges and comma-separated selections form one enclosing rectangle, not multiple boxes. Create separate annotations for separate instances.
 
-Check all four candidate edges against the agreed visible/full-extent convention. Do not invent hidden boundaries or apply a universal occlusion threshold. If a finer grid cannot fit labels or reaches subpixel resolution, use a coarser grid and native select/visual evidence; report unresolved precision instead of repeatedly issuing the same failing render or switching to direct file edits.
+Determine each candidate edge from evidence, not from mental conversion of image
+size or guessed subcell math. When a left, right, top or bottom edge is not
+clear in the current artifact, inspect the smallest coarse cell or cell range
+that contains that edge with `label select`. If the selected local region is
+large enough for readable labels, run `label grid IMAGE --cells CELLS` on that
+local edge region and choose subcells from the opened artifact. Inspect edge
+regions separately when needed; do not subdivide a large multi-cell region just
+because the final box is large.
+
+Use hierarchical cell addresses only when their parent grid or select artifact
+has been opened, or when the edge is already unambiguous in a coarser artifact.
+Prefer comma-separated cells to record inspected edge anchors when that is
+clearer than writing one broad range; remember that the CLI still turns those
+anchors into one enclosing rectangle. After choosing edge anchors, render
+`label visual` for the full candidate and verify that the rectangle follows the
+object boundary before issuing `label verify`.
+
+Check all four candidate edges against the agreed visible/full-extent
+convention. Do not invent hidden boundaries or apply a universal occlusion
+threshold. If `label grid --cells` fails because labels cannot fit, or if the
+rendered subgrid obscures the object, switch to the smallest useful
+`label select` or `label visual` evidence and report any remaining precision
+limit. Do not keep repeating the same failing render, switch to a bigger noisy
+subgrid, or edit label text directly.
 
 ## Verify and write
 

@@ -50,8 +50,8 @@ def test_render_geometry_and_readonly(project):
     assert len(result["cells"]) == 256
     assert result["cells"][0]["id"] == result["cell_labels"][0]
     with Image.open(root / result["artifact_path"]) as im:
-        assert im.size == (400, 400)
-        assert im.getpixel((25, 150)) != (255, 255, 255)
+        assert im.size == (1024, 1024)
+        assert im.getpixel((0, 0)) != (255, 255, 255)
     result = run("label", "select", path, "--cells", "A1:B2", "--margin", "0")
     assert set(result["cell_labels"]) == {"A1", "A2", "B1", "B2"}
     assert result["image_size"] == [1600, 1600]
@@ -99,3 +99,20 @@ def test_small_grid_renders_edge_labels(project):
     result = run("label", "grid", path, "--cells", "A1")
     assert len(result["cell_labels"]) == 64
     assert result["crop"] == [0, 0, 100, 100]
+
+
+def test_small_crop_auto_upscales_with_aspect_ratio(project):
+    root, run, image = project
+    # Image 1600x800 (2:1 aspect ratio). Cell A1 is 200x100.
+    path = image(size=(1600, 800))
+    result = run("label", "grid", path, "--cells", "A1")
+    assert result["crop"] == [0, 0, 200, 100]
+    assert result["image_size"] == [1600, 800]
+    with Image.open(root / result["artifact_path"]) as im:
+        assert im.size == (1024, 512)
+
+    # label select with A1:B1 (400x100), margin 0 -> 4:1 aspect ratio -> 1024x256
+    sel = run("label", "select", path, "--cells", "A1:B1", "--margin", "0")
+    assert sel["crop"] == [0, 0, 400, 100]
+    with Image.open(root / sel["artifact_path"]) as im:
+        assert im.size == (1024, 256)

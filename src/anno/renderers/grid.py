@@ -3,11 +3,25 @@
 import math
 from fractions import Fraction
 
-from PIL import ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont
 
 from ..core.coords import cells_bounds, name, selected_cells
 from ..core.errors import AnnoError
 from .visualizer import crop_bounds
+
+
+def _upscale_crop(cropped, max_size=1024):
+    crop_w, crop_h = cropped.size
+    max_dim = max(crop_w, crop_h)
+    if max_dim < max_size:
+        scale = max_size / max_dim
+        new_w = round(crop_w * scale)
+        new_h = round(crop_h * scale)
+        return cropped.resize((new_w, new_h), resample=Image.Resampling.NEAREST), (
+            new_w / crop_w,
+            new_h / crop_h,
+        )
+    return cropped, (1.0, 1.0)
 
 
 def _find_font(text, max_w, max_h):
@@ -178,7 +192,8 @@ def grid(image, expression=None):
     cells = [(x * 8 + i, y * 8 + j, d + 1) for x, y, d in parents for j in range(8) for i in range(8)]
     crop = cells_bounds(expression, *image.size)
     result = image.crop(crop)
-    labels, cells_geo = draw_cells(result, cells, image.size, crop[:2])
+    result, scale = _upscale_crop(result)
+    labels, cells_geo = draw_cells(result, cells, image.size, crop[:2], scale=scale)
     return result, {"cell_labels": labels, "cells": cells_geo, "crop": list(crop)}
 
 
@@ -186,5 +201,6 @@ def select(image, expression, margin):
     cells = selected_cells(expression)
     crop = crop_bounds(cells_bounds(expression, *image.size), image.size, margin)
     result = image.crop(crop)
-    labels, cells_geo = draw_cells(result, cells, image.size, crop[:2])
+    result, scale = _upscale_crop(result)
+    labels, cells_geo = draw_cells(result, cells, image.size, crop[:2], scale=scale)
     return result, {"cell_labels": labels, "cells": cells_geo, "crop": list(crop)}
