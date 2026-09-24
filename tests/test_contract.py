@@ -62,7 +62,6 @@ def test_init_creates_agents_md(project):
     assert ".anno/skills/anno-class/SKILL.md" in content
 
 
-
 def test_packaged_schema_copies():
     root = Path(__file__).resolve().parents[1]
     for path in (root / "schemas").glob("*.json"):

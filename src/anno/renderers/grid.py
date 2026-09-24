@@ -42,10 +42,12 @@ def draw_cells(image, cells, original_size, origin=(0, 0), scale=(1, 1)):
         )
         label = name(x, y, depth)
         labels.append(label)
-        cell_geometry.append({
-            "id": label,
-            "xyxy": [math.floor(x1), math.floor(y1), math.ceil(x2), math.ceil(y2)],
-        })
+        cell_geometry.append(
+            {
+                "id": label,
+                "xyxy": [math.floor(x1), math.floor(y1), math.ceil(x2), math.ceil(y2)],
+            }
+        )
 
         font = _find_font(label, rect[2] - rect[0] - 4, rect[3] - rect[1] - 4)
         if font is None:
@@ -74,8 +76,8 @@ def draw_cells(image, cells, original_size, origin=(0, 0), scale=(1, 1)):
         max_h = rect[3] - rect[1] - 4
         parts = label.split("-")
 
-        is_top = (y == min_y)
-        is_left = (x == min_x)
+        is_top = y == min_y
+        is_left = x == min_x
 
         if not (is_top or is_left):
             continue
@@ -101,7 +103,9 @@ def draw_cells(image, cells, original_size, origin=(0, 0), scale=(1, 1)):
                 col_font = _find_font(col_short, max_w, max_h)
                 row_font = _find_font(row_short, max_w, max_h)
                 if col_font is None or row_font is None:
-                    raise AnnoError("Grid cells cannot fit readable coordinate labels; use a coarser grid or visual")
+                    raise AnnoError(
+                        "Grid cells cannot fit readable coordinate labels; use a coarser grid or visual"
+                    )
                 draw.text(
                     (rect[0] + 2, rect[1] + 2),
                     col_short,
@@ -126,7 +130,9 @@ def draw_cells(image, cells, original_size, origin=(0, 0), scale=(1, 1)):
                 font = _find_font(col_short, max_w, max_h)
                 text = col_short
             if font is None:
-                raise AnnoError("Grid cells cannot fit readable coordinate labels; use a coarser grid or visual")
+                raise AnnoError(
+                    "Grid cells cannot fit readable coordinate labels; use a coarser grid or visual"
+                )
             draw.text(
                 (rect[0] + 2, rect[1] + 2),
                 text,
@@ -142,7 +148,9 @@ def draw_cells(image, cells, original_size, origin=(0, 0), scale=(1, 1)):
                 font = _find_font(row_short, max_w, max_h)
                 text = row_short
             if font is None:
-                raise AnnoError("Grid cells cannot fit readable coordinate labels; use a coarser grid or visual")
+                raise AnnoError(
+                    "Grid cells cannot fit readable coordinate labels; use a coarser grid or visual"
+                )
             draw.text(
                 (rect[0] + 2, rect[1] + 2),
                 text,

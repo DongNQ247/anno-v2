@@ -183,4 +183,3 @@ def test_error_includes_suggested_recovery(project):
     assert "suggested_recovery" in result["error"]
     assert result["error"]["code"] == "STALE_AUDIT"
     assert "audit" in result["error"]["suggested_recovery"].lower()
-

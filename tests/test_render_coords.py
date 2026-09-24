@@ -99,4 +99,3 @@ def test_small_grid_renders_edge_labels(project):
     result = run("label", "grid", path, "--cells", "A1")
     assert len(result["cell_labels"]) == 64
     assert result["crop"] == [0, 0, 100, 100]
-

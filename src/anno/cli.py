@@ -285,7 +285,13 @@ def queue_or_status(root, args):
         elif record["status"] != "modified" and not label_for(root, pic).exists():
             todo.append((1, key, "new_label", None))
     if not todo:
-        return {"image_path": None, "task": None, "issues": None, "done": True, "reason": "NO_FLAGGED_OR_UNLABELED"}
+        return {
+            "image_path": None,
+            "task": None,
+            "issues": None,
+            "done": True,
+            "reason": "NO_FLAGGED_OR_UNLABELED",
+        }
     _, key, task, issues = min(todo)
     return {"image_path": "dataset/images/" + key, "task": task, "issues": issues, "done": False}
 
