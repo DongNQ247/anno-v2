@@ -33,6 +33,9 @@
     },
     "issues": {
       "type": "object"
+    },
+    "reason": {
+      "type": "string"
     }
   },
   "additionalProperties": false,

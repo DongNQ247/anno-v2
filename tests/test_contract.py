@@ -53,6 +53,16 @@ def test_init_preserves_every_existing_file(project):
     assert all(p.read_bytes() == content for p, content in before.items())
 
 
+def test_init_creates_agents_md(project):
+    root, run, image = project
+    agents_file = root / "AGENTS.md"
+    assert agents_file.exists()
+    content = agents_file.read_text(encoding="utf-8")
+    assert "## Anno project skills" in content
+    assert ".anno/skills/anno-class/SKILL.md" in content
+
+
+
 def test_packaged_schema_copies():
     root = Path(__file__).resolve().parents[1]
     for path in (root / "schemas").glob("*.json"):

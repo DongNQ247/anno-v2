@@ -27,7 +27,16 @@ When audit is in scope, run `anno review audit` using the project's agreed confi
 
 If audit returns `AUDIT_INPUT_ERROR`, read each entry in `error.details.failures`. The failed run commits no new audit state, even for otherwise valid images. Missing labels, invalid class IDs, malformed labels and unreadable images are input problems, not evidence of clean negatives. Do not approve from that failed run. Complete/correct source data only within authorized scope, or report the blocker.
 
-For dataset review, use `review next`: flagged precedes modified, then unreviewed. Read all returned findings. For specific images, inspect those images directly. Neither status nor the queue performs a fresh audit or proves that existing approvals remain current after external file changes.
+For a dataset-wide review, **MUST** use `anno review next` before selecting the
+first image. It prioritizes flagged images, then modified images, then
+unreviewed images. Process only the returned image, read all returned findings,
+and call `anno review next` again after completing that image before selecting
+another one. Do not enumerate image files directly as a substitute for the
+queue unless the queue is unavailable and the limitation is reported. For
+specific images or an explicit subset, inspect only those paths directly and do
+not let the global queue expand the requested scope. Neither status nor the
+queue performs a fresh audit or proves that existing approvals remain current
+after external file changes.
 
 ## Inspect the actual images
 

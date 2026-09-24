@@ -138,8 +138,10 @@ def render(root, args, request):
         extra = {"box_index": args.index, "crop": list(crop)}
     elif name == "grid":
         result, extra = grid(image, args.cells)
+        extra["image_size"] = [request.width, request.height]
     elif name == "select":
         result, extra = select(image, args.cells, args.margin)
+        extra["image_size"] = [request.width, request.height]
     elif name == "visual":
         result, crop = preview(image, request.box, args.margin)
         extra = {"crop": list(crop), "xyxy": list(request.box)}
@@ -260,7 +262,7 @@ def queue_or_status(root, args):
         priority = {"flagged": 0, "modified": 1, "unreviewed": 2}
         todo = sorted((priority[r["status"]], key, r) for key, pic, r in records if r["status"] in priority)
         if not todo:
-            return {"image_path": None, "done": True}
+            return {"image_path": None, "done": True, "reason": "ALL_REVIEWED"}
         _, key, record = todo[0]
         return {
             "image_path": "dataset/images/" + key,
@@ -283,7 +285,7 @@ def queue_or_status(root, args):
         elif record["status"] != "modified" and not label_for(root, pic).exists():
             todo.append((1, key, "new_label", None))
     if not todo:
-        return {"image_path": None, "task": None, "issues": None, "done": True}
+        return {"image_path": None, "task": None, "issues": None, "done": True, "reason": "NO_FLAGGED_OR_UNLABELED"}
     _, key, task, issues = min(todo)
     return {"image_path": "dataset/images/" + key, "task": task, "issues": issues, "done": False}
 
@@ -363,7 +365,27 @@ def bbox(root, args, req):
     record.pop("audit_fingerprint", None)
     record["updated_at"] = timestamp()
     commit_labels(root, req.label, serialize_labels(rows), manifest)
-    return {"image_path": "dataset/images/" + req.key, "box_count": len(rows), "written": True}
+    result = {
+        "image_path": "dataset/images/" + req.key,
+        "label_path": req.label.relative_to(root).as_posix(),
+        "box_count": len(rows),
+        "written": True,
+    }
+    if args.action in ("add", "update"):
+        idx = len(rows) - 1 if args.action == "add" else args.index
+        cid, xc, yc, w, h = rows[idx]
+        result["box"] = {
+            "index": idx,
+            "class_id": cid,
+            "class_name": req.classes[cid],
+            "xyxy": [
+                (xc - w / 2) * req.width,
+                (yc - h / 2) * req.height,
+                (xc + w / 2) * req.width,
+                (yc + h / 2) * req.height,
+            ],
+        }
+    return result
 
 
 def dispatch(root, args):
@@ -395,6 +417,12 @@ def dispatch(root, args):
                 "image_path": "dataset/images/" + req.key,
                 "verification_id": verification_id(req, args.class_id),
                 "box": list(req.box),
+                "candidate": {
+                    "class_id": args.class_id,
+                    "class_name": req.classes[args.class_id],
+                    "cells": args.cells,
+                    "xyxy": list(req.box),
+                },
             }
         if subcommand == "mark":
             return mark(root, args, req)
@@ -416,10 +444,23 @@ def main(argv=None):
         result = {"ok": True, "status": "success", **dispatch(Path.cwd().resolve(), args)}
         code = 0
     except AnnoError as error:
+        recovery = {
+            "INVALID_ARGUMENT": "Check anno --help or anno <command> --help",
+            "INVALID_PROJECT": "Run anno doctor to inspect the reported project files",
+            "RECOVERY_REQUIRED": "Run anno repair to replay the interrupted transaction",
+            "STALE_AUDIT": "Run anno review audit, then inspect the image before approval",
+            "VERIFICATION_MISMATCH": "Run anno label verify again with the current image, class and cells",
+            "AUDIT_INPUT_ERROR": "Fix the listed input errors, then rerun anno review audit",
+            "MISSING_LABEL": "Use anno label bbox empty for confirmed negative images",
+            "OPEN_GEOMETRY_ISSUES": "Fix or delete the flagged boxes before approving",
+        }.get(error.code)
+        error_dict = {"code": error.code, "message": str(error), "details": error.details}
+        if recovery:
+            error_dict["suggested_recovery"] = recovery
         result = {
             "ok": False,
             "status": "error",
-            "error": {"code": error.code, "message": str(error), "details": error.details},
+            "error": error_dict,
         }
         code = 1
     except (OSError, ValueError, TypeError) as error:

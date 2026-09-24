@@ -19,6 +19,9 @@
     "image_path": {
       "type": "string"
     },
+    "label_path": {
+      "type": "string"
+    },
     "box_count": {
       "type": "integer",
       "minimum": 0

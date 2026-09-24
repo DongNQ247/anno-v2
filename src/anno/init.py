@@ -20,6 +20,7 @@ def initialize(root):
         ".anno/schemas",
     ]
     files = [
+        (root / "AGENTS.md", RESOURCES / "AGENTS.md"),
         (root / "label.md", RESOURCES / "label.md"),
         (root / "dataset/data.yaml", RESOURCES / "data.yaml"),
         (root / ".anno/config/config.json", RESOURCES / "config.json"),

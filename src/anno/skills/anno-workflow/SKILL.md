@@ -16,7 +16,14 @@ Use `anno capabilities` or command `--help` when syntax is uncertain. All operat
 Respect the user's scope:
 
 - For an explicit image or subset, process only those paths. A project-wide queue can point outside that subset.
-- For a dataset task, `anno label next` prioritizes flagged images, then missing label files. Read the returned `task` and `issues`.
+- For a dataset-wide task, **MUST** use `anno label next` before selecting the
+  first image. Process only the returned `task`, read all returned `issues`,
+  and call `anno label next` again after finishing that image before selecting
+  another one. Do not enumerate image files directly as a substitute for the
+  queue unless the queue is unavailable and the limitation is reported.
+- `anno label next` prioritizes flagged images, then missing label files. A
+  `done` response means the queue selected no further work; it does not prove
+  that every existing label is complete or correct.
 - On resume, return to the last unfinished image before using `next`. An existing label file can contain only part of an image's objects; the queue does not track annotation completeness.
 
 Queue selection does not reserve an image. Use an existing assignment scheme when multiple workers are active; do not edit a path owned by another worker. Serialized CLI writes do not make duplicate human/Agent decisions safe.

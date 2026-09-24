@@ -82,3 +82,13 @@ def test_subpixel_render_fails_clearly(project):
     _, run, image = project
     path = image(size=(64, 64))
     run("label", "grid", path, "--cells", "A1-a1", ok=False)
+
+
+def test_small_grid_renders_edge_labels(project):
+    _, run, image = project
+    path = image(size=(800, 800))
+    # In 800x800 image, cell A1 is 100x100. Subcells are ~12x12px, too small for full labels but fit edge labels.
+    result = run("label", "grid", path, "--cells", "A1")
+    assert len(result["cell_labels"]) == 64
+    assert result["crop"] == [0, 0, 100, 100]
+

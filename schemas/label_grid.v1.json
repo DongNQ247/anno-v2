@@ -28,6 +28,23 @@
         "type": "string"
       }
     },
+    "cells": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "xyxy"],
+        "properties": {
+          "id": {"type": "string"},
+          "xyxy": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"type": "integer"}}
+        }
+      }
+    },
+    "image_size": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {"type": "integer"}
+    },
     "crop": {
       "type": "array",
       "minItems": 4,

@@ -38,6 +38,9 @@
         "object",
         "null"
       ]
+    },
+    "reason": {
+      "type": "string"
     }
   },
   "additionalProperties": false,
