@@ -134,3 +134,53 @@ def test_geometry_blocks_approval(project):
         run("review", "mark", path, "--verdict", "approved", ok=False)["error"]["code"]
         == "OPEN_GEOMETRY_ISSUES"
     )
+
+
+def test_verify_returns_candidate(project):
+    _, run, image = project
+    path = image()
+    result = run("label", "verify", path, "--class", "0", "--cells", "A1:B2")
+    assert result["candidate"]["class_id"] == 0
+    assert result["candidate"]["class_name"] == "car"
+    assert result["candidate"]["cells"] == "A1:B2"
+    assert result["candidate"]["xyxy"] == result["box"]
+
+
+def test_queue_done_includes_reason(project):
+    _, run, image = project
+    image()
+    label_done = run("label", "next")
+    assert label_done["done"]
+    assert label_done["reason"] == "NO_FLAGGED_OR_UNLABELED"
+    run("review", "audit")
+    run("review", "mark", "dataset/images/one.png", "--verdict", "approved")
+    review_done = run("review", "next")
+    assert review_done["done"]
+    assert review_done["reason"] == "ALL_REVIEWED"
+
+
+def test_bbox_mutation_echoes_box(project):
+    _, run, image = project
+    path = image(labels=None)
+    result = add(run, path)
+    assert result["label_path"] == "dataset/labels/one.txt"
+    assert result["box"]["index"] == 0
+    assert result["box"]["class_id"] == 0
+    assert result["box"]["class_name"] == "car"
+    assert len(result["box"]["xyxy"]) == 4
+    update = add(run, path, "A1:C3", action="update", index=0)
+    assert update["box"]["index"] == 0
+    assert update["label_path"] == "dataset/labels/one.txt"
+    delete = run("label", "bbox", "delete", path, "--index", "0")
+    assert delete["label_path"] == "dataset/labels/one.txt"
+    assert "box" not in delete
+
+
+def test_error_includes_suggested_recovery(project):
+    _, run, image = project
+    path = image()
+    result = run("review", "mark", path, "--verdict", "approved", ok=False)
+    assert "suggested_recovery" in result["error"]
+    assert result["error"]["code"] == "STALE_AUDIT"
+    assert "audit" in result["error"]["suggested_recovery"].lower()
+

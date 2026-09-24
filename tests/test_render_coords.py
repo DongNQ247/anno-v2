@@ -38,16 +38,24 @@ def test_render_geometry_and_readonly(project):
     }
     result = run("label", "grid", path)
     assert result["cell_labels"][0] == "A1"
+    assert result["image_size"] == [1600, 1600]
+    assert result["cells"][0]["id"] == "A1"
+    assert result["cells"][0]["xyxy"] == [0, 0, 200, 200]
     with Image.open(root / result["artifact_path"]) as im:
         assert im.size == (1024, 1024)
     result = run("label", "grid", path, "--cells", "A1:B2")
     assert len(result["cell_labels"]) == 256
     assert "A1-h8" in result["cell_labels"] and "B2-a1" in result["cell_labels"]
+    assert result["image_size"] == [1600, 1600]
+    assert len(result["cells"]) == 256
+    assert result["cells"][0]["id"] == result["cell_labels"][0]
     with Image.open(root / result["artifact_path"]) as im:
         assert im.size == (400, 400)
         assert im.getpixel((25, 150)) != (255, 255, 255)
     result = run("label", "select", path, "--cells", "A1:B2", "--margin", "0")
     assert set(result["cell_labels"]) == {"A1", "A2", "B1", "B2"}
+    assert result["image_size"] == [1600, 1600]
+    assert len(result["cells"]) == 4
     result = run("label", "visual", path, "--cells", "C3:D4", "--margin", "0")
     with Image.open(root / result["artifact_path"]) as im:
         assert im.size == (400, 400)
