@@ -9,7 +9,10 @@
     "artifact_path",
     "cell_labels",
     "cells",
-    "image_size"
+    "image_size",
+    "evidence_id",
+    "coordinate_level",
+    "parent_cells"
   ],
   "properties": {
     "ok": {
@@ -59,6 +62,19 @@
       "maxItems": 2,
       "items": {
         "type": "integer"
+      }
+    },
+    "evidence_id": {
+      "type": "string"
+    },
+    "coordinate_level": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "parent_cells": {
+      "type": "array",
+      "items": {
+        "type": "string"
       }
     },
     "crop": {

@@ -204,6 +204,13 @@ def render_text(result, args=None):
             "VERIFICATION_MISMATCH": "Run anno label verify again with the same image, class and cells",
             "AUDIT_INPUT_ERROR": "Fix the listed input errors, then rerun anno review audit --format text",
         }.get(error["code"])
+        if (
+            error.get("code") == "INVALID_ARGUMENT"
+            and error.get("details", {}).get("reason") == "COORDINATE_EVIDENCE_REQUIRED"
+        ):
+            missing = ", ".join(error["details"].get("missing_parents", []))
+            img = error["details"].get("image_path", "IMAGE")
+            hint = f"anno label grid {img} --cells {missing} --format text"
         if hint:
             lines.extend(["", "Next: " + hint])
         return "\n".join(lines)

@@ -8,7 +8,10 @@
     "image_path",
     "verification_id",
     "box",
-    "candidate"
+    "candidate",
+    "coordinate_level",
+    "parent_cells",
+    "evidence_id"
   ],
   "properties": {
     "ok": {
@@ -60,6 +63,19 @@
           }
         }
       }
+    },
+    "coordinate_level": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "parent_cells": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_id": {
+      "type": "string"
     }
   },
   "additionalProperties": false

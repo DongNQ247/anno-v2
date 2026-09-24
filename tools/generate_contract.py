@@ -153,6 +153,9 @@ def generate():
                     "xyxy": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"type": "integer"}},
                 },
             },
+            "coordinate_level": {"type": "integer", "minimum": 1},
+            "parent_cells": {"type": "array", "items": {"type": "string"}},
+            "evidence_id": {"type": "string"},
         },
         "label bbox list": {
             "boxes": {
@@ -226,6 +229,9 @@ def generate():
                             "maxItems": 2,
                             "items": {"type": "integer"},
                         },
+                        evidence_id={"type": "string"},
+                        coordinate_level={"type": "integer", "minimum": 1},
+                        parent_cells={"type": "array", "items": {"type": "string"}},
                     )
                 if command.endswith("visual"):
                     properties.update(

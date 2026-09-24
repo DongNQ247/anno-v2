@@ -10,6 +10,9 @@
     "cell_labels",
     "cells",
     "image_size",
+    "evidence_id",
+    "coordinate_level",
+    "parent_cells",
     "crop",
     "native_crop_size",
     "render_size",
@@ -64,6 +67,19 @@
       "maxItems": 2,
       "items": {
         "type": "integer"
+      }
+    },
+    "evidence_id": {
+      "type": "string"
+    },
+    "coordinate_level": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "parent_cells": {
+      "type": "array",
+      "items": {
+        "type": "string"
       }
     },
     "crop": {

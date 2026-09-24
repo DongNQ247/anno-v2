@@ -12,6 +12,7 @@ from PIL import Image
 
 from . import __version__
 from .core.errors import AnnoError
+from .core.evidence import check_coordinate_evidence, save_evidence_context
 from .core.project import (
     GEOMETRY_ISSUES,
     RESOURCES,
@@ -150,9 +151,12 @@ def render(root, args, request):
         result, crop = preview(image, request.boxes[args.index]["xyxy"], args.margin)
         extra = {"box_index": args.index, "crop": list(crop)}
     elif name == "grid":
+        if args.cells:
+            check_coordinate_evidence(root, request, args.cells)
         result, extra = grid(image, args.cells, args.scale)
         extra["image_size"] = [request.width, request.height]
     elif name == "select":
+        check_coordinate_evidence(root, request, args.cells)
         result, extra = select(image, args.cells, args.margin, args.scale)
         extra["image_size"] = [request.width, request.height]
     elif name == "visual":
@@ -175,6 +179,11 @@ def render(root, args, request):
     finally:
         if os.path.exists(temp):
             os.unlink(temp)
+    if name in ("grid", "select"):
+        evidence_meta = save_evidence_context(
+            root, request, name, getattr(args, "cells", None), out.relative_to(root).as_posix()
+        )
+        extra.update(evidence_meta)
     return {
         "image_path": "dataset/images/" + request.key,
         "artifact_path": out.relative_to(root).as_posix(),
@@ -361,6 +370,7 @@ def bbox(root, args, req):
     elif args.action == "delete":
         rows.pop(args.index)
     else:
+        check_coordinate_evidence(root, req, args.cells)
         if args.verification_id != verification_id(req, args.class_id):
             raise AnnoError(
                 "Verification does not match current image, label, class and box; rerun verify",
@@ -432,6 +442,7 @@ def dispatch(root, args):
             return queue_or_status(root, args)
         req = validate_request(root, args)
         if subcommand == "verify":
+            coord_level, parent_cells, evidence_id = check_coordinate_evidence(root, req, args.cells)
             return {
                 "image_path": "dataset/images/" + req.key,
                 "verification_id": verification_id(req, args.class_id),
@@ -442,6 +453,9 @@ def dispatch(root, args):
                     "cells": args.cells,
                     "xyxy": list(req.box),
                 },
+                "coordinate_level": coord_level,
+                "parent_cells": parent_cells,
+                "evidence_id": evidence_id,
             }
         if subcommand == "mark":
             return mark(root, args, req)
@@ -473,6 +487,14 @@ def main(argv=None):
             "MISSING_LABEL": "Use anno label bbox empty for confirmed negative images",
             "OPEN_GEOMETRY_ISSUES": "Fix or delete the flagged boxes before approving",
         }.get(error.code)
+        if (
+            error.code == "INVALID_ARGUMENT"
+            and error.details
+            and error.details.get("reason") == "COORDINATE_EVIDENCE_REQUIRED"
+        ):
+            missing = ", ".join(error.details.get("missing_parents", []))
+            img = error.details.get("image_path", "IMAGE")
+            recovery = f"Run anno label grid {img} --cells {missing} to open required parent evidence"
         error_dict = {"code": error.code, "message": str(error), "details": error.details}
         if recovery:
             error_dict["suggested_recovery"] = recovery

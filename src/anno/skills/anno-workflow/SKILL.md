@@ -49,22 +49,27 @@ Use the smallest amount of zoom that resolves the decision:
 
 Coordinates are anchored to the original image. Do not rename a crop's upper-left corner A1. Hierarchy uses `A1-a1`, then `A1-a1-a1`; ranges and comma-separated selections form one enclosing rectangle, not multiple boxes. Create separate annotations for separate instances.
 
-Determine each candidate edge from evidence, not from mental conversion of image
-size or guessed subcell math. When a left, right, top or bottom edge is not
-clear in the current artifact, inspect the smallest coarse cell or cell range
-that contains that edge with `label select`. If the selected local region is
-large enough for readable labels, run `label grid IMAGE --cells CELLS` on that
-local edge region and choose subcells from the opened artifact. Inspect edge
-regions separately when needed; do not subdivide a large multi-cell region just
-because the final box is large.
+## Coordinate evidence and hierarchical workflow
 
-Use hierarchical cell addresses only when their parent grid or select artifact
-has been opened, or when the edge is already unambiguous in a coarser artifact.
-Prefer comma-separated cells to record inspected edge anchors when that is
-clearer than writing one broad range; remember that the CLI still turns those
-anchors into one enclosing rectangle. After choosing edge anchors, render
-`label visual` for the full candidate and verify that the rectangle follows the
-object boundary before issuing `label verify`.
+Every hierarchical coordinate depth must be backed by an artifact that has been generated and opened for the exact image:
+
+1. **Evidence-gated depth:** Each hierarchical coordinate requires corresponding parent artifact evidence.
+2. **Default grid:** `label grid IMAGE` grants evidence only for the top-level (level 1) grid (`A1`..`H8`).
+3. **Subgrid evidence:** `label grid IMAGE --cells CELLS` grants evidence for the child cells of the selected parent region (e.g. `--cells B3` unlocks level 2 `B3-a1`..`B3-h8`; `--cells B3-a2` unlocks level 3 `B3-a2-a1`..`B3-a2-h8`).
+4. **Coarse sufficiency:** Opening a subgrid is not required if the current coordinate level is already sufficient to determine all four candidate edges.
+5. **Pre-verification check:** Before `label verify` and `bbox add/update`, check that the candidate cells do not exceed the currently available evidence level.
+6. **Visual check does not grant subcells:** `label visual` checks candidate boundaries without grid lines; it does not grant authorization to invent or address new subcells.
+
+Standard localization workflow:
+
+```text
+grid at current level
+-> select boundary region if needed
+-> subgrid specific parent if finer resolution is required
+-> visual inspect candidate box without grid lines
+-> verify candidate
+-> bbox add/update
+```
 
 Check all four candidate edges against the agreed visible/full-extent
 convention. Do not invent hidden boundaries or apply a universal occlusion
